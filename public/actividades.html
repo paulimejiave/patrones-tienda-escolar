@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Actividades — Tienda de Patrones</title>
+<meta name="description" content="Ficha de actividades por patrón de diseño para el taller de Arquitectura de Sistemas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --paper: #eae7de;
+    --sheet: #fbfaf5;
+    --ink: #21241f;
+    --ink-soft: #5c6158;
+    --line: #dbd7c9;
+    --accent: #c85a1d;
+    --accent-soft: #f1dcc9;
+    --cat-creacional: #6b6f63;
+    --cat-creacional-soft: #e4e4dc;
+    --cat-estructural: #a5761f;
+    --cat-estructural-soft: #f1e2c2;
+    --cat-comportamiento: #a8362a;
+    --cat-comportamiento-soft: #f2d9d4;
+    --shadow: 0 1px 2px rgba(33,36,31,0.06), 0 12px 32px -16px rgba(33,36,31,0.28);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #17181a;
+      --sheet: #232420;
+      --ink: #ede9df;
+      --ink-soft: #a8a99a;
+      --line: #3a3b34;
+      --accent: #e58444;
+      --accent-soft: #3a2a1c;
+      --cat-creacional: #a3a696;
+      --cat-creacional-soft: #34352d;
+      --cat-estructural: #d9a648;
+      --cat-estructural-soft: #3a2f18;
+      --cat-comportamiento: #dd7a6c;
+      --cat-comportamiento-soft: #3a211d;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px -16px rgba(0,0,0,0.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --paper: #17181a;
+    --sheet: #232420;
+    --ink: #ede9df;
+    --ink-soft: #a8a99a;
+    --line: #3a3b34;
+    --accent: #e58444;
+    --accent-soft: #3a2a1c;
+    --cat-creacional: #a3a696;
+    --cat-creacional-soft: #34352d;
+    --cat-estructural: #d9a648;
+    --cat-estructural-soft: #3a2f18;
+    --cat-comportamiento: #dd7a6c;
+    --cat-comportamiento-soft: #3a211d;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 12px 32px -16px rgba(0,0,0,0.6);
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: clamp(20px, 5vw, 56px) clamp(16px, 4vw, 28px) 64px;
+  }
+
+  .sheet {
+    background: var(--sheet);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    box-shadow: var(--shadow);
+    padding: clamp(24px, 5vw, 56px);
+  }
+
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-weight: 700;
+    font-size: clamp(34px, 6vw, 48px);
+    line-height: 1.02;
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 17px;
+    color: var(--ink-soft);
+    max-width: 66ch;
+    margin: 0 0 24px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 8px;
+  }
+
+  .tag-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 13px;
+    text-decoration: none;
+    color: var(--ink);
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-left: 3px solid var(--accent);
+    padding: 9px 14px;
+    border-radius: 2px;
+    transition: border-color 120ms ease, transform 120ms ease;
+  }
+  .tag-link:hover { border-color: var(--accent); transform: translateY(-1px); }
+  .tag-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .tag-link .k { color: var(--ink-soft); }
+
+  hr.div {
+    border: none;
+    border-top: 1px solid var(--line);
+    margin: 36px 0;
+  }
+
+  h2 {
+    font-family: "Barlow Condensed", "Arial Narrow", sans-serif;
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: 0.01em;
+    text-transform: uppercase;
+    color: var(--ink);
+    margin: 0 0 6px;
+  }
+
+  .section-note {
+    color: var(--ink-soft);
+    font-size: 15.5px;
+    max-width: 68ch;
+    margin: 0 0 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14.5px;
+  }
+  .table-wrap { overflow-x: auto; }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-top: 1px solid var(--line);
+    vertical-align: top;
+  }
+  thead th {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    border-top: none;
+    border-bottom: 1px solid var(--line);
+  }
+  td code, .rf-text code {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 0.86em;
+    background: var(--accent-soft);
+    color: var(--ink);
+    padding: 0.1em 0.4em;
+    border-radius: 2px;
+  }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+  .pill.creacional { color: var(--cat-creacional); background: var(--cat-creacional-soft); }
+  .pill.creacional .pill-dot { background: var(--cat-creacional); }
+  .pill.estructural { color: var(--cat-estructural); background: var(--cat-estructural-soft); }
+  .pill.estructural .pill-dot { background: var(--cat-estructural); }
+  .pill.comportamiento { color: var(--cat-comportamiento); background: var(--cat-comportamiento-soft); }
+  .pill.comportamiento .pill-dot { background: var(--cat-comportamiento); }
+
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .step {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+  .step-num {
+    font-family: "Barlow Condensed", sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--accent);
+    line-height: 1.4;
+  }
+  .step-body h3 {
+    margin: 0 0 2px;
+    font-size: 16px;
+    font-weight: 600;
+  }
+  .step-body p {
+    margin: 0;
+    color: var(--ink-soft);
+    font-size: 15px;
+  }
+
+  .legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  @media (max-width: 640px) {
+    .legend { grid-template-columns: 1fr; }
+  }
+  .legend-item {
+    border: 1px solid var(--line);
+    border-radius: 3px;
+    padding: 14px 16px;
+    background: var(--paper);
+  }
+  .legend-def {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-top: 6px;
+  }
+
+  footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 20px;
+    justify-content: space-between;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--ink-soft);
+  }
+  footer a { color: var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="sheet">
+    <p class="eyebrow">Taller · Arquitectura de Sistemas — Patrones de diseño</p>
+    <h1>Tienda de Patrones</h1>
+    <p class="lede">
+      La misma tienda escolar de siempre — catálogo, carrito, checkout — pero esta vez el objetivo
+      es la arquitectura: el código implementa <strong>9 patrones de diseño GoF</strong> de forma
+      clara y documentada. En grupo, van a ubicar uno (o dos) de esos patrones, entenderlo, y
+      demostrar que lo entendieron <strong>extendiéndolo sin modificar lo que ya existe</strong>.
+    </p>
+    <div class="links">
+      <a class="tag-link" href="/" target="_blank" rel="noopener">
+        <span class="k">DEMO</span> tienda-de-patrones
+      </a>
+      <a class="tag-link" href="https://github.com/xaviercardona-ops/patrones-tienda-escolar" target="_blank" rel="noopener">
+        <span class="k">REPO</span> github.com/xaviercardona-ops/patrones-tienda-escolar
+      </a>
+      <a class="tag-link" href="https://refactoring.guru/es/design-patterns" target="_blank" rel="noopener">
+        <span class="k">GUÍA</span> refactoring.guru/es/design-patterns
+      </a>
+    </div>
+
+    <hr class="div">
+
+    <h2>Los 9 patrones</h2>
+    <p class="section-note">Cada archivo del código trae un comentario indicando el patrón y el rol GoF exacto que cumple (Strategy, ConcreteStrategy, Context...), con la misma nomenclatura que usa la guía.</p>
+    <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Patrón</th><th>Categoría</th><th>Dónde vive en la tienda</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>singleton/</code> Singleton</td><td><span class="pill creacional"><span class="pill-dot"></span>Creacional</span></td><td>Única instancia del carrito (<code>CartStore</code>)</td></tr>
+        <tr><td><code>factory/</code> Factory Method</td><td><span class="pill creacional"><span class="pill-dot"></span>Creacional</span></td><td>Creación de métodos de pago (tarjeta, PSE, contraentrega)</td></tr>
+        <tr><td><code>builder/</code> Builder</td><td><span class="pill creacional"><span class="pill-dot"></span>Creacional</span></td><td>Construcción del pedido (<code>OrderBuilder</code>) en el checkout</td></tr>
+        <tr><td><code>decorator/</code> Decorator</td><td><span class="pill estructural"><span class="pill-dot"></span>Estructural</span></td><td>Extras del pedido: envoltura de regalo, envío exprés</td></tr>
+        <tr><td><code>facade/</code> Facade</td><td><span class="pill estructural"><span class="pill-dot"></span>Estructural</span></td><td><code>CheckoutFacade</code>: coordina inventario + pago + envío + notificación</td></tr>
+        <tr><td><code>adapter/</code> Adapter</td><td><span class="pill estructural"><span class="pill-dot"></span>Estructural</span></td><td>Integración de una pasarela de pago externa (<code>ExternalGatewayX</code>)</td></tr>
+        <tr><td><code>strategy/</code> Strategy</td><td><span class="pill comportamiento"><span class="pill-dot"></span>Comportamiento</span></td><td>Cálculo del descuento (<code>DiscountStrategy</code>)</td></tr>
+        <tr><td><code>observer/</code> Observer</td><td><span class="pill comportamiento"><span class="pill-dot"></span>Comportamiento</span></td><td>Notificaciones al confirmar un pedido</td></tr>
+        <tr><td><code>state/</code> State</td><td><span class="pill comportamiento"><span class="pill-dot"></span>Comportamiento</span></td><td>Ciclo de vida del pedido: Pendiente → Pagado → Enviado → Entregado</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <hr class="div">
+
+    <h2>La actividad</h2>
+    <p class="section-note">Los mismos 4 pasos para cualquier patrón que les toque.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Ubicar y explicar</h3>
+          <p>Encuentren los archivos donde vive su patrón, nombren los roles con la nomenclatura de refactoring.guru, y expliquen con sus palabras qué problema resuelve ahí específicamente.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Diagramar</h3>
+          <p>Dibujen el diagrama de clases UML tal como está implementado, y compárenlo con el diagrama genérico de la guía.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Extender sin tocar lo existente</h3>
+          <p>Agreguen una variante nueva tocando el mínimo código fuera de su propio archivo nuevo. Si extenderlo es fácil, el patrón está bien aplicado.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <h3>Exponer (5 min)</h3>
+          <p>Muestren su extensión funcionando en vivo + el diagrama, y expliquen qué tan distinto se vería el código sin el patrón.</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="div">
+
+    <h2>Extensión específica por patrón</h2>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Patrón</th><th>Qué construye el grupo</th></tr></thead>
+      <tbody>
+        <tr><td>Singleton</td><td>Con un log, demostrar que dos componentes distintos comparten la misma instancia del carrito</td></tr>
+        <tr><td>Factory Method</td><td>Agregar un método de pago nuevo (ej. Nequi) sin modificar el código cliente que ya usa la fábrica</td></tr>
+        <tr><td>Builder</td><td>Construir dos pedidos distintos (exprés vs. completo) reutilizando el mismo builder</td></tr>
+        <tr><td>Decorator</td><td>Crear un decorador nuevo (ej. seguro de envío) y combinarlo con los que ya existen</td></tr>
+        <tr><td>Facade</td><td>Escribir a mano los pasos que la fachada resume, y comparar cuánto código se ahorra con ella</td></tr>
+        <tr><td>Adapter</td><td>Integrar una tercera pasarela de pago ficticia con una interfaz distinta, sin tocar el checkout</td></tr>
+        <tr><td>Strategy</td><td>Agregar una estrategia de descuento nueva (ej. "2x1") y enchufarla en tiempo de ejecución</td></tr>
+        <tr><td>Observer</td><td>Agregar un observador nuevo (ej. reducir inventario) sin tocar quien lo emite</td></tr>
+        <tr><td>State</td><td>Forzar una transición inválida (debe bloquearse) y luego agregar el estado "Devuelto"</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <hr class="div">
+
+    <h2>Si su grupo toma 2 patrones</h2>
+    <p class="section-note">Cuando toque fusionar dos patrones en un mismo grupo, que sean de la misma categoría — así profundizan en un solo tipo de problema.</p>
+    <div class="legend">
+      <div class="legend-item">
+        <span class="pill creacional"><span class="pill-dot"></span>Creacionales</span>
+        <p class="legend-def">Pareja sugerida: Singleton + Builder. Factory Method queda independiente.</p>
+      </div>
+      <div class="legend-item">
+        <span class="pill estructural"><span class="pill-dot"></span>Estructurales</span>
+        <p class="legend-def">Pareja sugerida: Facade + Decorator. Adapter queda independiente.</p>
+      </div>
+      <div class="legend-item">
+        <span class="pill comportamiento"><span class="pill-dot"></span>Comportamiento</span>
+        <p class="legend-def">Pareja sugerida: Strategy + State. Observer queda independiente.</p>
+      </div>
+    </div>
+
+    <footer>
+      <span>Tienda de Patrones — taller de Arquitectura de Sistemas</span>
+      <span>Next.js · TypeScript · sin backend</span>
+    </footer>
+  </div>
+</div>
+</body>
+</html>
