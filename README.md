@@ -4,7 +4,7 @@ Aplicación de práctica para el curso de **Arquitectura de Sistemas**, tema **p
 
 La nomenclatura de roles (Strategy/Context/ConcreteStrategy, Subject/Observer, etc.) sigue la que usa [refactoring.guru/es/design-patterns](https://refactoring.guru/es/design-patterns), para que cada grupo pueda abrir la página del patrón en español y calzarla contra el código.
 
-🔗 **Demo en línea:** _(agregar aquí la URL de Vercel)_
+🔗 **Demo en línea:** https://patrones-tienda-escolar.vercel.app
 📋 **Ficha de actividades para los estudiantes:** `/actividades.html` (enlace también visible en el encabezado de la tienda)
 
 ## Cómo ejecutar el proyecto localmente
