@@ -1,83 +1,46 @@
 "use client";
 
-import { useState } from "react";
-import CartPanel from "@/components/CartPanel";
-import CheckoutForm from "@/components/CheckoutForm";
-import OrderStatusPanel from "@/components/OrderStatusPanel";
-import ProductCatalog from "@/components/ProductCatalog";
-import { formatCOP } from "@/lib/format";
-import { PRODUCTS } from "@/lib/products";
-import { Order } from "@/lib/types";
-import { PedidoContext } from "@/patterns/state/PedidoContext";
-
-type View = "shop" | "checkout" | "confirmation";
+import { useEffect } from "react";
+import { PedidoContext } from "../patterns/state/PedidoContext";
 
 export default function Home() {
-  const [view, setView] = useState<View>("shop");
-  const [confirmedOrder, setConfirmedOrder] = useState<Order | null>(null);
-  const [confirmedTotal, setConfirmedTotal] = useState(0);
-  const [pedidoContext, setPedidoContext] = useState<PedidoContext | null>(null);
+  useEffect(() => {
+    console.log("=== PRUEBAS DEL PATRÓN STATE (PUNTO 3) ===");
 
-  function handleConfirmed(order: Order, total: number) {
-    setConfirmedOrder(order);
-    setConfirmedTotal(total);
-    setPedidoContext(new PedidoContext());
-    setView("confirmation");
-  }
+    const pedido = new PedidoContext();
+
+    // 1. Intentar cancelar sin motivo o transición inválida
+    console.log("--- Prueba 1: Transición inválida ---");
+    try {
+      pedido.cancelar();
+    } catch (error: any) {
+      console.log("Bloqueado con éxito:", error.message);
+    }
+
+    // 2. Flujo hasta el nuevo estado Devuelto
+    console.log("\n--- Prueba 2: Flujo hasta estado Devuelto ---");
+    console.log("Estado actual:", pedido.getEstadoActual()); // Pendiente
+
+    pedido.avanzar(); // Pagado / Enviado
+    pedido.avanzar(); // Entregado
+    console.log("Estado actual:", pedido.getEstadoActual());
+
+    // Transición al nuevo estado agregado
+    pedido.avanzar(); // Devuelto
+    console.log("Nuevo estado alcanzado:", pedido.getEstadoActual());
+
+    // 3. Intento de acción en estado Devuelto (Bloqueo)
+    try {
+      pedido.avanzar();
+    } catch (error: any) {
+      console.log("Bloqueado en Devuelto:", error.message);
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen bg-neutral-50 text-neutral-900">
-      <header className="border-b border-neutral-200 bg-white">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-4">
-          <h1 className="text-xl font-semibold">🏫 Tienda de Patrones</h1>
-          <a
-            href="/actividades.html"
-            target="_blank"
-            rel="noopener"
-            className="text-sm underline hover:text-neutral-900"
-          >
-            Actividades
-          </a>
-        </div>
-      </header>
-
-      <main className="mx-auto max-w-5xl px-4 py-8">
-        {view === "shop" && (
-          <div className="grid gap-8 lg:grid-cols-3">
-            <div className="lg:col-span-2">
-              <ProductCatalog products={PRODUCTS} />
-            </div>
-            <div>
-              <CartPanel onCheckout={() => setView("checkout")} />
-            </div>
-          </div>
-        )}
-
-        {view === "checkout" && (
-          <CheckoutForm onConfirmed={handleConfirmed} onBack={() => setView("shop")} />
-        )}
-
-        {view === "confirmation" && confirmedOrder && pedidoContext && (
-          <div className="mx-auto max-w-md space-y-6">
-            <div className="rounded-lg border border-neutral-200 bg-white p-6 text-center">
-              <div className="mb-2 text-4xl">✅</div>
-              <h2 className="mb-1 text-lg font-semibold">¡Pedido confirmado!</h2>
-              <p className="text-sm text-neutral-500">
-                Pedido {confirmedOrder.id} — Total {formatCOP(confirmedTotal)}
-              </p>
-            </div>
-
-            <OrderStatusPanel pedido={pedidoContext} />
-
-            <button
-              onClick={() => setView("shop")}
-              className="w-full rounded border border-neutral-300 px-3 py-2 text-sm hover:bg-neutral-100"
-            >
-              Volver a la tienda
-            </button>
-          </div>
-        )}
-      </main>
+    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+      <h1>Pruebas Patrón State Completadas</h1>
+      <p>Abre la consola del navegador (F12) para ver la ejecución de los estados.</p>
     </div>
   );
 }
