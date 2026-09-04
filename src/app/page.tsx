@@ -19,7 +19,7 @@ export default function Home() {
 
     // 2. Flujo hasta el nuevo estado Devuelto
     console.log("\n--- Prueba 2: Flujo hasta estado Devuelto ---");
-    console.log("Estado actual:", pedido.getEstadoActual()); // Pendiente
+  console.log("Estado actual:", pedido.estado);
 
     pedido.avanzar(); // Pagado / Enviado
     pedido.avanzar(); // Entregado
