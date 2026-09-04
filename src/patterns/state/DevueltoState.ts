@@ -1,30 +1,17 @@
-import { OrderState } from './OrderState';
-import { PedidoContext } from './PedidoContext';
+import type { OrderState } from "./OrderState";
+import type { PedidoContext } from "./PedidoContext";
 
+/** PATRÓN: State – Rol: "ConcreteState" (nuevo estado agregado) */
 export class DevueltoState implements OrderState {
-  private context: PedidoContext;
+  readonly name = "Devuelto";
 
-  constructor(context: PedidoContext) {
-    this.context = context;
+  constructor(private context: PedidoContext) {}
+
+  avanzar(): void {
+    throw new Error("El pedido ya fue devuelto y finalizó su flujo.");
   }
 
-  public pagar(): void {
-    console.log("Error: No se puede pagar un pedido que ya fue devuelto.");
-  }
-
-  public enviar(): void {
-    console.log("Error: No se puede enviar un pedido que ya fue devuelto.");
-  }
-
-  public entregar(): void {
-    console.log("Error: No se puede entregar un pedido devuelto.");
-  }
-
-  public devolver(): void {
-    console.log("El pedido ya se encuentra registrado en estado Devuelto.");
-  }
-
-  public obtenerNombre(): string {
-    return "Devuelto";
+  cancelar(): void {
+    throw new Error("Un pedido devuelto no se puede cancelar.");
   }
 }
